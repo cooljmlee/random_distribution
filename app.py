@@ -31,9 +31,7 @@ def divide_teams(members, num_teams):
     for i, member in enumerate(remaining_members):
         teams[i % num_teams].append(member)
 
-    teams = balance_teams(teams, num_teams)
-
-    return teams
+    return balance_teams(teams, num_teams)
 
 def balance_teams(teams, num_teams):
     members = list(itertools.chain(*teams))
@@ -52,7 +50,10 @@ def balance_teams(teams, num_teams):
 
 st.title("회원 관리 프로그램")
 
-members = st.session_state.get('members', [])
+if 'members' not in st.session_state:
+    st.session_state['members'] = []
+
+members = st.session_state['members']
 
 name = st.text_input("회원 이름 입력")
 gender = st.radio("성별", ("남성", "여성"))
@@ -95,4 +96,3 @@ if st.button("팀 나누기"):
         for i, team in enumerate(teams):
             team_members = ", ".join([f"{member[0]} ({member[1]})" for member in team])
             st.write(f"팀 {i + 1}: {team_members}")
-
